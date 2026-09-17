@@ -294,7 +294,7 @@ if expectations.failed:
 - Transformation: dbt
 - Validation: Great Expectations
 - Orchestration: GitHub Actions
-- APIs: Flask
+- APIs: FastAPI + Uvicorn
 - **Cost**: $0/month
 
 **Tier 2 (As You Grow)**
