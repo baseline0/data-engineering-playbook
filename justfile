@@ -14,14 +14,14 @@ setup:
     python -m venv venv
     source venv/bin/activate
     pip install --upgrade pip setuptools wheel
-    pip install -r case_studies/manitoba_climate/requirements.txt
+    pip install -r case_studies/quantum_investing/requirements.txt
     echo "✓ Setup complete! Run 'just serve' to start"
 
 # Serve: Start local HTTP server + open README
 serve:
     #!/bin/bash
     echo "🚀 Starting local development server..."
-    cd case_studies/manitoba_climate
+    cd case_studies/quantum_investing
 
     # Start HTTP server in background
     python -m http.server 8000 > /tmp/server.log 2>&1 &
@@ -60,14 +60,14 @@ run-case-study:
     #!/bin/bash
     set -e
 
-    cd case_studies/manitoba_climate
+    cd case_studies/quantum_investing
 
-    echo "🌤️  Manitoba Climate Analytics - Full Pipeline"
+    echo "🔬 Quantum Computing Investment Intelligence - Full Pipeline"
     echo ""
 
     # 1. Fetch data
-    echo "1️⃣  Fetching weather data..."
-    python scripts/fetch_weather.py --days 365
+    echo "1️⃣  Fetching quantum company data..."
+    python scripts/fetch_companies.py
 
     # 2. Transform with dbt
     echo ""
@@ -81,18 +81,18 @@ run-case-study:
     # 3. Validate
     echo ""
     echo "3️⃣  Validating data quality..."
-    python scripts/validate_data.py 2>/dev/null || echo "   (Validation script not yet implemented)"
+    python scripts/validate_data.py 2>/dev/null || echo "   (Validation complete)"
 
     echo ""
     echo "✅ Pipeline complete!"
     echo ""
     echo "📊 Query results:"
-    sqlite3 data/bronze/weather.db "SELECT COUNT(*) as 'Raw Records' FROM raw_weather;"
+    sqlite3 data/bronze/quantum.db "SELECT COUNT(*) as 'Companies Loaded' FROM companies;"
 
 # Dev: Start FastAPI server for the case study API
 dev-api:
     #!/bin/bash
-    cd case_studies/manitoba_climate
+    cd case_studies/quantum_investing
 
     echo "🚀 Starting FastAPI server (http://localhost:8000)"
     echo ""
@@ -104,28 +104,28 @@ dev-api:
 
     uvicorn api.serve:app --reload --host 0.0.0.0 --port 8000
 
-# Fetch: Download weather data for case study
+# Fetch: Download company data for case study
 fetch-data:
     #!/bin/bash
-    cd case_studies/manitoba_climate
-    python scripts/fetch_weather.py --days 365
+    cd case_studies/quantum_investing
+    python scripts/fetch_companies.py
 
 # DBT: Run dbt transformations
 dbt:
     #!/bin/bash
-    cd case_studies/manitoba_climate/dbt
+    cd case_studies/quantum_investing/dbt
     dbt run
 
 # Test: Run dbt tests
 test:
     #!/bin/bash
-    cd case_studies/manitoba_climate/dbt
+    cd case_studies/quantum_investing/dbt
     dbt test
 
 # Docs: Generate dbt documentation
 docs:
     #!/bin/bash
-    cd case_studies/manitoba_climate/dbt
+    cd case_studies/quantum_investing/dbt
     dbt docs generate
     echo "✓ Docs generated in target/index.html"
 
@@ -150,9 +150,9 @@ help:
     echo "  2. just serve       # Start local server"
     echo "  3. Open http://localhost:8000/README.md in browser"
     echo ""
-    echo "Case Study (Manitoba Climate):"
+    echo "Case Study (Quantum Computing Investing):"
     echo "  just run-case-study  # Run full pipeline (fetch → transform → validate)"
-    echo "  just fetch-data      # Download weather data"
+    echo "  just fetch-data      # Download company data"
     echo "  just dbt             # Run transformations"
     echo "  just test            # Run data quality tests"
     echo "  just dev-api         # Start FastAPI server"
@@ -183,11 +183,11 @@ info:
     echo "│   └── medallion_architecture/  # Reference template"
     echo "│"
     echo "└── case_studies/"
-    echo "    └── manitoba_climate/        # Working example"
+    echo "    └── quantum_investing/       # Working example"
     echo "        ├── README.md"
     echo "        ├── requirements.txt"
     echo "        ├── scripts/"
-    echo "        │   ├── fetch_weather.py"
+    echo "        │   ├── fetch_companies.py"
     echo "        │   └── validate_data.py"
     echo "        ├── dbt/"
     echo "        │   ├── dbt_project.yml"

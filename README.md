@@ -43,11 +43,11 @@ Start here to build your own system. Each template includes:
 
 Working examples using public Canadian datasets:
 
-**Manitoba Climate & Weather Analytics** (`manitoba_climate/`)
-- Ingest: Environment Canada weather data
+**Quantum Computing Investment Intelligence** (`quantum_investing/`)
+- Ingest: Company data, funding rounds, research events (placeholder for real data sources)
 - Transform: dbt medallion architecture (Bronze → Silver → Gold)
-- Validate: Great Expectations test suites
-- Serve: SQLite API endpoints
+- Validate: Data quality checks and Great Expectations
+- Serve: FastAPI REST endpoints with auto-generated docs
 - Deploy: GitHub Actions scheduled jobs
 - **Cost**: ~$0/month
 
