@@ -1,0 +1,31 @@
+# Manitoba Climate Analytics - Python Dependencies
+
+# Data fetching & processing
+requests==2.31.0
+pandas==2.1.0
+
+# Database
+sqlite3  # (included in Python stdlib)
+
+# dbt (transformation)
+dbt-core==1.7.0
+dbt-sqlite==1.7.0
+
+# Data validation
+great-expectations==0.18.0
+
+# API serving (async, modern)
+fastapi==0.104.0
+uvicorn==0.24.0
+
+# Testing & quality
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Environment management
+python-dotenv==1.0.0
+
+# Optional: For dashboards & analysis
+# jupyter==1.0.0
+# metabase-connector==0.1.0
+# matplotlib==3.8.0

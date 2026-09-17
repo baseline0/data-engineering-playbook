@@ -1,0 +1,76 @@
+# dbt project configuration for Manitoba Climate Analytics
+
+name: 'manitoba_climate'
+version: '1.0.0'
+config-version: 2
+
+profile: 'manitoba_climate'
+
+model-paths: ["models"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+require-dbt-version: [">=1.5.0", "<2.0.0"]
+
+models:
+  manitoba_climate:
+    # Bronze layer - raw data from ingestion
+    bronze:
+      +materialized: table
+      +schema: bronze
+      +tags: ['bronze']
+
+    # Silver layer - cleaned, conformed data
+    silver:
+      +materialized: table
+      +schema: silver
+      +tags: ['silver']
+
+      # Tests applied to all silver models
+      +columns:
+        fetched_at:
+          +description: "When this record was processed"
+
+    # Gold layer - business-ready aggregated data
+    gold:
+      +materialized: table
+      +schema: gold
+      +tags: ['gold']
+
+      +columns:
+        date:
+          +description: "Date of observation"
+          +tests:
+            - not_null
+        station_id:
+          +description: "Weather station identifier"
+          +tests:
+            - not_null
+            - accepted_values:
+                values: ['winnipeg_pearson', 'brandon']
+
+on-run-start: "{{ log('Starting Manitoba Climate dbt run', info=true) }}"
+
+on-run-end: "{{ log('Completed Manitoba Climate dbt run', info=true) }}"
+
+seeds:
+  # Seed data (dimension tables)
+  manitoba_climate:
+    +schema: reference
+    stations:
+      +column_types:
+        station_id: text
+        station_name: text
+        latitude: real
+        longitude: real
+
+vars:
+  # Configurable variables
+  start_date: '2023-01-01'
+  target_schema: 'public'
