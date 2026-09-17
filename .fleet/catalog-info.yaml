@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: data-engineering-playbook
+  description: Open-source guide to modern data engineering (reference implementations, templates, case studies)
+  links:
+    - url: https://github.com/baseline0/data-engineering-playbook
+      title: Repository
+    - url: https://github.com/baseline0/data-engineering-playbook/blob/main/.fleet/boundaries.md
+      title: Charter
+spec:
+  type: documentation
+  owner: malexiuk@gmail.com
+  dependsOn: []
+  providesApis:
+    - reference-templates
+    - case-studies
+    - decision-guides
+  consumesApis: []
+  lifecycle: production
