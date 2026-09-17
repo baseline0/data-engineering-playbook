@@ -1,0 +1,30 @@
+[project]
+name = "quantum-investing"
+version = "0.1.0"
+description = "Quantum Computing Investment Intelligence Platform - case study for data engineering"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [
+    { name = "Mark Alexiuk", email = "malexiuk@gmail.com" },
+]
+
+dependencies = [
+    "requests>=2.31.0",
+    "pandas>=2.1.0",
+    "dbt-core>=1.7.0",
+    "dbt-sqlite>=1.7.0",
+    "great-expectations>=0.18.0",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-dotenv>=1.0.0",
+    "yfinance>=0.2.32",
+    "toolboxes @ file:///home/mark/projects/toolboxes",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+]
