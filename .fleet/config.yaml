@@ -1,36 +1,25 @@
-# Fleet Configuration for data-engineering-playbook
-# Unified config location: .fleet/config.yaml
-# Open-source guide to modern data engineering
-
 type: documentation
 language: markdown
 test_framework: N/A
-
-# Standards compliance
 standards:
   type_hints: N/A
   docstrings: markdown
   max_line_length: 120
-
-# Governance
 governance:
   enabled: true
   fixable-categories:
-    - environment
-    - config
-    - discovery
+  - environment
+  - config
+  - discovery
   protected-paths:
-    - .env
-    - secrets.json
-    - "*.key"
-
-# Testing requirements
+  - .env
+  - secrets.json
+  - '*.key'
 testing:
   min_coverage: N/A
   test_command: N/A
   coverage_report: N/A
-
-# Guard rails
 guard-rails:
   max-lines-changed: 1000
   require-approval: false
+schema_version: '1.0'

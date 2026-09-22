@@ -1,0 +1,5 @@
+schema_version: '1.0'
+name: data-engineering-playbook
+title: 'Repository Boundaries: data-engineering-playbook'
+description: Boundary specification
+status: approved
