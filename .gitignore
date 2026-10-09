@@ -88,3 +88,5 @@ logs/
 *.bak
 *.backup
 *.orig
+# generated/local artifacts
+results/
