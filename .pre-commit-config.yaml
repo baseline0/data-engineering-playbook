@@ -34,3 +34,12 @@ repos:
         entry: end-of-file-fixer
         language: system
         types: [text]
+  - repo: local
+    hooks:
+      - id: repo-root-pattern
+        name: "[P1] Enforce REPO_ROOT pattern (no .parent outside constants.py)"
+        entry: bash ../fleet-base/scripts/check-repo-root-pattern.sh
+        language: system
+        pass_filenames: false
+        files: '\.py$'
+        stages: [pre-commit]
