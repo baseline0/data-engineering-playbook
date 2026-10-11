@@ -43,3 +43,12 @@ repos:
         pass_filenames: false
         files: '\.py$'
         stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: check-argparse-prohibition
+        name: "[P1] No argparse: CLIs use Typer"
+        entry: bash ../fleet-base/scripts/check-argparse-prohibition.sh
+        language: system
+        pass_filenames: false
+        files: '\.py$'
+        stages: [pre-commit]
