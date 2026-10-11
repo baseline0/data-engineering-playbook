@@ -1,3 +1,1 @@
 # Files that still import argparse. Convert each to Typer, then remove its line.
-case_studies/quantum_investing/scripts/fetch_companies.py
-case_studies/quantum_investing/scripts/fetch_weather.py

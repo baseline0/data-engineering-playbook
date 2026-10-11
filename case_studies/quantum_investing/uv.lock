@@ -1775,6 +1775,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "toolboxes" },
+    { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
     { name = "yfinance" },
 ]
@@ -1799,6 +1800,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "requests", specifier = ">=2.31.0" },
     { name = "toolboxes", directory = "/home/mark/projects/toolboxes" },
+    { name = "typer", specifier = ">=0.9.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.24.0" },
     { name = "yfinance", specifier = ">=0.2.32" },
 ]

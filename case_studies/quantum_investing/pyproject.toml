@@ -20,7 +20,12 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "yfinance>=0.2.32",
     "toolboxes @ file:///home/mark/projects/toolboxes",
+    "typer>=0.9.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]
 
 [project.optional-dependencies]
 dev = [
