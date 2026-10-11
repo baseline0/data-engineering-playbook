@@ -94,3 +94,6 @@ results/
 .coverage.*
 *.cover
 coverage.xml
+
+# Local backlog: not versioned
+TODO.md
