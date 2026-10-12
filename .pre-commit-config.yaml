@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: repo-root-pattern
         name: "[P1] Enforce REPO_ROOT pattern (no .parent outside constants.py)"
-        entry: bash ../fleet-base/scripts/check-repo-root-pattern.sh
+        entry: fleet hook check-repo-root-pattern
         language: system
         pass_filenames: false
         files: '\.py$'
@@ -47,7 +47,7 @@ repos:
     hooks:
       - id: check-argparse-prohibition
         name: "[P1] No argparse: CLIs use Typer"
-        entry: bash ../fleet-base/scripts/check-argparse-prohibition.sh
+        entry: fleet hook check-argparse-prohibition
         language: system
         pass_filenames: false
         files: '\.py$'

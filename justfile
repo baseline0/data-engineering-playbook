@@ -1,6 +1,4 @@
 # Shared commit recipe from fleet-base. Literal path: just does not interpolate variables into import paths.
-import "../fleet-base/src/fleet_base/justfiles/shared/commit.just"
-
 # Data Engineering Playbook - Local Development
 # Run: just --list (to see all recipes)
 
@@ -203,3 +201,16 @@ info:
     echo "            ├── silver/"
     echo "            └── gold/"
     echo ""
+
+# ============================================================================
+# Shared fleet recipes, run by fleet-base's installed tool (uv tool install --editable ~/projects/fleet-base).
+# Each line calls `fleet recipe NAME`; define a recipe here instead to override it.
+# ============================================================================
+
+# Falls back to manual commit if Ollama unavailable or commitmate fails
+commit:
+    fleet recipe commit
+
+# Add all untracked files and commit with LLM or custom message
+commit-all:
+    fleet recipe commit-all
