@@ -74,7 +74,7 @@ repos:
     hooks:
       - id: check-typer-explicit
         name: "[P1] typer commands take required --name value options (ratchet against baseline)"
-        entry: uv run --project /home/mark/projects/infrastructure python /home/mark/projects/infrastructure/scripts/check_typer_explicit.py check --root . --baseline .typer-explicit-baseline.json
+        entry: fleet typer-explicit check --root . --baseline .typer-explicit-baseline.json
         language: system
         pass_filenames: false
         files: '\.py$'
