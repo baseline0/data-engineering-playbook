@@ -52,3 +52,12 @@ repos:
         pass_filenames: false
         files: '\.py$'
         stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: uv-lock-check
+        name: "[P1] uv.lock matches pyproject.toml (read-only; run uv lock to fix)"
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        files: '^(pyproject\.toml|uv\.lock)$'
+        stages: [pre-commit]
