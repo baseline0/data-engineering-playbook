@@ -61,3 +61,12 @@ repos:
         pass_filenames: false
         files: '^(pyproject\.toml|uv\.lock)$'
         stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: fleet-clean-vendored
+        name: "[P1] just/fleet-clean.just matches fleet-base (hand edits fail)"
+        entry: just check-fleet-clean
+        language: system
+        pass_filenames: false
+        files: '^(just/fleet-clean\.just|justfile)$'
+        stages: [pre-commit]

@@ -2,6 +2,8 @@
 # Data Engineering Playbook - Local Development
 # Run: just --list (to see all recipes)
 
+import 'just/fleet-clean.just'
+
 set shell := ["bash", "-c"]
 set dotenv-load := true
 
@@ -131,7 +133,8 @@ docs:
     echo "✓ Docs generated in target/index.html"
 
 # Clean: Remove generated files and cache
-clean:
+# Renamed from `clean`: removes venv/, target/ build output, and /tmp server files, which are not caches. The shared clean (fleet-clean.just) removes caches only.
+clean-artifacts:
     #!/bin/bash
     echo "🧹 Cleaning up..."
     rm -rf venv/
@@ -160,7 +163,7 @@ help:
     echo ""
     echo "Development:"
     echo "  just docs            # Generate dbt docs"
-    echo "  just clean           # Remove generated files"
+    echo "  just clean-artifacts           # Remove generated files"
     echo "  just stop            # Stop local server"
     echo ""
 
