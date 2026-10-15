@@ -2,6 +2,8 @@
 # Data Engineering Playbook - Local Development
 # Run: just --list (to see all recipes)
 
+import 'just/repo-push.just'
+
 import 'just/fleet-clean.just'
 
 set shell := ["bash", "-c"]
