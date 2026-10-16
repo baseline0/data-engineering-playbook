@@ -1,4 +1,4 @@
-# Vendored from fleet-base @ 2bddd4e. Do not edit: the next install overwrites this file.
+# Vendored from fleet-base @ 9bedc97. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
 # fleet-clean-sha256: a2dd5c316a6853d5bac649aea613dadc5bd4e259cfbbe76ec145de8be217907b
 # fleet-clean-body
