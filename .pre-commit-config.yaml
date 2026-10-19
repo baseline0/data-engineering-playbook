@@ -27,8 +27,8 @@ repos:
         stages: [pre-commit]
 
       - id: pytest
-        name: pytest
-        entry: pytest
+        name: pytest (unit tier)
+        entry: pytest tests/unit
         language: system
         types: [python]
         stages: [pre-commit]
