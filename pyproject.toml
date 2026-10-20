@@ -10,3 +10,12 @@ dependencies = [
 dev = [
     "pytest>=9.1.1",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers"]
+markers = [
+    "unit: deterministic, isolated, no external dependencies",
+    "integration: tests that use real services or files across components",
+    "e2e: end-to-end tests of a whole workflow",
+]
