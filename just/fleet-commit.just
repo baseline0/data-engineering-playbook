@@ -1,4 +1,4 @@
-# Vendored from fleet-base @ 9bedc97. Do not edit: the next install overwrites this file.
+# Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
 # fleet-commit-sha256: f31a9109086ad8c7753ee35b94c06bb367d57e2a55e3224489d36ce776da7459
 # fleet-commit-body

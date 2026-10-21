@@ -5,6 +5,7 @@
 import 'just/repo-push.just'
 
 import 'just/fleet-clean.just'
+import 'just/fleet-checks.just'
 
 set shell := ["bash", "-c"]
 set dotenv-load := true
