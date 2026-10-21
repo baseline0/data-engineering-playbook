@@ -1,6 +1,6 @@
 # Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
-# fleet-commit-sha256: f31a9109086ad8c7753ee35b94c06bb367d57e2a55e3224489d36ce776da7459
+# fleet-commit-sha256: 75493a3ded193a4276de7c4f1d2ecaa82517c78a88692b080653d601671e1658
 # fleet-commit-body
 
 # COMMIT_MODEL: model used by commitmate (fast by default; mistral:7b for more detailed).
@@ -111,12 +111,6 @@ commit:
     echo "[*] Available models at http://localhost:11434/api/tags"
     echo "[*] Use custom message: MESSAGE=\"type: description\" just commit"
     exit 1
-
-# Add all untracked files and commit with LLM or custom message
-commit-all:
-    #!/bin/bash
-    git add -A
-    just commit
 
 # Verify this copy is unedited: the hash in its header must match the body below the marker.
 check-fleet-commit:

@@ -6,6 +6,7 @@ import 'just/repo-push.just'
 
 import 'just/fleet-clean.just'
 import 'just/fleet-checks.just'
+import 'just/fleet-commit.just'
 
 set shell := ["bash", "-c"]
 set dotenv-load := true
@@ -212,11 +213,3 @@ info:
 # Shared fleet recipes, run by fleet-base's installed tool (run `just -f ~/projects/fleet-base/justfile install-fleet`; ADR-020).
 # Each line calls `fleet recipe NAME`; define a recipe here instead to override it.
 # ============================================================================
-
-# Falls back to manual commit if Ollama unavailable or commitmate fails
-commit:
-    fleet recipe --name commit
-
-# Add all untracked files and commit with LLM or custom message
-commit-all:
-    fleet recipe --name commit-all
