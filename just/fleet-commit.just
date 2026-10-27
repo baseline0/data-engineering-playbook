@@ -1,6 +1,6 @@
 # Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
-# fleet-commit-sha256: 75493a3ded193a4276de7c4f1d2ecaa82517c78a88692b080653d601671e1658
+# fleet-commit-sha256: e001c7b920e63f41c81dff061dbe738c98d2caa5b996fcd2b254d0e60da1f7ba
 # fleet-commit-body
 
 # COMMIT_MODEL: model used by commitmate (fast by default; mistral:7b for more detailed).
@@ -73,6 +73,19 @@ commit:
 
     # If MESSAGE is set, use it directly
     if [ -n "$MESSAGE" ]; then
+        # Why: a pre-commit hook that rewrites a staged file (ruff format, a whitespace fixer) aborts the commit. Re-stage
+        # exactly the paths that were staged before, and retry once. Nothing else is added, so unrelated work stays out.
+        staged_before=$(git diff --cached --name-only)
+        if git commit -m "$MESSAGE"; then
+            exit 0
+        fi
+        if [ -z "$staged_before" ]; then
+            exit 1
+        fi
+        echo "[*] A hook changed staged files. Re-staging the same files and retrying once."
+        printf '%s\n' "$staged_before" | while IFS= read -r path; do
+            git add -- "$path"
+        done
         git commit -m "$MESSAGE"
         exit 0
     fi
