@@ -1,6 +1,6 @@
 # Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
-# fleet-commit-sha256: e001c7b920e63f41c81dff061dbe738c98d2caa5b996fcd2b254d0e60da1f7ba
+# fleet-commit-sha256: 9d4951d7299eadb734e143f8cefd7854cd2f01daba8d782f07235b6010b866c3
 # fleet-commit-body
 
 # COMMIT_MODEL: model used by commitmate (fast by default; mistral:7b for more detailed).
@@ -83,8 +83,15 @@ commit:
             exit 1
         fi
         echo "[*] A hook changed staged files. Re-staging the same files and retrying once."
+        # Why: a staged deletion has no file on disk, and once staged it is gone from the index too, so `git add` and
+        # `git add -A` both fail with "pathspec did not match". Re-stage a removal with `git rm --cached` (a no-op when
+        # the index already lacks the path); re-stage everything else with `git add`.
         printf '%s\n' "$staged_before" | while IFS= read -r path; do
-            git add -- "$path"
+            if [ -e "$path" ]; then
+                git add -- "$path"
+            else
+                git rm -q --cached --ignore-unmatch -- "$path"
+            fi
         done
         git commit -m "$MESSAGE"
         exit 0
