@@ -105,3 +105,48 @@ repos:
         always_run: true
         stages:
           - pre-push
+  - repo: local
+    hooks:
+      - id: vendored-fleet-commit
+        name: "[P1] just/fleet-commit.just matches fleet-base (hand edits fail)"
+        entry: just check-fleet-commit
+        language: system
+        pass_filenames: false
+        files: '^(just/fleet-commit\.just|justfile)$'
+        stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: vendored-repo-push
+        name: "[P1] just/repo-push.just matches fleet-base (hand edits fail)"
+        entry: just check-repo-push
+        language: system
+        pass_filenames: false
+        files: '^(just/repo-push\.just|justfile)$'
+        stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: vendored-fleet-checks
+        name: "[P1] just/fleet-checks.just matches fleet-base (hand edits fail)"
+        entry: just check-fleet-checks
+        language: system
+        pass_filenames: false
+        files: '^(just/fleet-checks\.just|justfile)$'
+        stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: vendored-fleet-test
+        name: "[P1] just/fleet-test.just matches fleet-base (hand edits fail)"
+        entry: just check-fleet-test
+        language: system
+        pass_filenames: false
+        files: '^(just/fleet-test\.just|justfile)$'
+        stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: vendored-current
+        name: "[P1] vendored just modules are current with the latest fleet-base release (pre-push)"
+        entry: uv run --project ../fleet-base python -m fleet_base.vendor_just check --repo .
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
