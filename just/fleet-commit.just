@@ -1,6 +1,6 @@
-# Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
+# Vendored from fleet-base @ v0.7.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
-# fleet-commit-sha256: 9d4951d7299eadb734e143f8cefd7854cd2f01daba8d782f07235b6010b866c3
+# fleet-commit-sha256: d29f3a8fd3b2f6a6fa6c72f3d4cea54f8e64680decc4db3c1a4081c7a6e3b38d
 # fleet-commit-body
 
 # COMMIT_MODEL: model used by commitmate (fast by default; mistral:7b for more detailed).
@@ -101,6 +101,13 @@ commit:
     if ! curl -s http://localhost:11434/api/tags > /dev/null 2>&1; then
         echo "[!] Ollama not running. Start: ollama serve"
         echo "[*] Or use custom message: MESSAGE=\"fix: description\" just commit"
+        exit 1
+    fi
+
+    # Why: commitmate asks accept/edit/cancel on stdin. Without a terminal that prompt reads EOF and the commit fails
+    # half-way, so a non-interactive caller has to pass MESSAGE.
+    if [ ! -t 0 ]; then
+        echo "[!] No terminal for commitmate's prompt. Use MESSAGE=\"type: description\" just commit"
         exit 1
     fi
 

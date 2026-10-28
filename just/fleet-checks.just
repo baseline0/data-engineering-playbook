@@ -1,4 +1,4 @@
-# Vendored from fleet-base @ v0.6.0. Do not edit: the next install overwrites this file.
+# Vendored from fleet-base @ v0.7.0. Do not edit: the next install overwrites this file.
 # Update: uv run python -m fleet_base.vendor_just install <this repo> (run in fleet-base's checkout)
 # fleet-checks-sha256: 0451bf0db64269da85bf46cbbf3796426b33aa5436efe7f73e1a6e757dc8bf14
 # fleet-checks-body
