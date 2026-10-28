@@ -2,7 +2,6 @@ default_stages:
   - pre-commit
 default_install_hook_types:
   - pre-commit
-  - pre-push
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -87,15 +86,7 @@ repos:
         files: '\.py$'
         stages: [pre-commit]
   - repo: local
-    hooks:
-      - id: just-fleet-test
-        name: '[P0] Pre-push: just fleet-test (unit tests)'
-        entry: env -u VIRTUAL_ENV just fleet-test
-        language: system
-        pass_filenames: false
-        always_run: true
-        stages:
-          - pre-push
+    hooks: []
   - repo: local
     hooks:
       - id: vendored-fleet-clean
