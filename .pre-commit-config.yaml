@@ -79,15 +79,6 @@ repos:
         stages: [pre-commit]
   - repo: local
     hooks:
-      - id: fleet-clean-vendored
-        name: "[P1] just/fleet-clean.just matches fleet-base (hand edits fail)"
-        entry: just check-fleet-clean
-        language: system
-        pass_filenames: false
-        files: '^(just/fleet-clean\.just|justfile)$'
-        stages: [pre-commit]
-  - repo: local
-    hooks:
       - id: check-typer-explicit
         name: "[P1] typer commands take required --name value options (ratchet against baseline)"
         entry: fleet typer-explicit check --root . --baseline .typer-explicit-baseline.json
@@ -105,6 +96,15 @@ repos:
         always_run: true
         stages:
           - pre-push
+  - repo: local
+    hooks:
+      - id: vendored-fleet-clean
+        name: "[P1] just/fleet-clean.just matches fleet-base (hand edits fail)"
+        entry: just check-fleet-clean
+        language: system
+        pass_filenames: false
+        files: '^(just/fleet-clean\.just|justfile)$'
+        stages: [pre-commit]
   - repo: local
     hooks:
       - id: vendored-fleet-commit
@@ -145,7 +145,7 @@ repos:
     hooks:
       - id: vendored-current
         name: "[P1] vendored just modules are current with the latest fleet-base release (pre-push)"
-        entry: uv run --project ../fleet-base python -m fleet_base.vendor_just check --repo .
+        entry: uv run --project ../fleet-base python -m fleet_base.vendor_just check-current --repo .
         language: system
         pass_filenames: false
         always_run: true
