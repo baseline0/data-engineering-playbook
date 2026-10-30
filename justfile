@@ -125,10 +125,25 @@ dbt:
     dbt run
 
 # Test: Run dbt tests
-test:
+test-dbt:
     #!/bin/bash
     cd case_studies/quantum_investing/dbt
     dbt test
+
+# Run tests
+# Unit tests only, matching CI and the pre-push hook. Use test-all for everything.
+test: test-unit
+
+# Unit tests only (what CI and the pre-push gate run). Self-contained: depends on no other recipe.
+test-unit:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if uv run pytest --version >/dev/null 2>&1; then
+        uv run pytest -m unit --tb=short -v
+        exit 0
+    fi
+    echo "error: test-unit cannot run in this repo: install pytest as a dev dependency (uv add --dev pytest)" >&2
+    exit 1
 
 # Docs: Generate dbt documentation
 docs:
@@ -163,7 +178,7 @@ help:
     echo "  just run-case-study  # Run full pipeline (fetch → transform → validate)"
     echo "  just fetch-data      # Download company data"
     echo "  just dbt             # Run transformations"
-    echo "  just test            # Run data quality tests"
+    echo "  just test-dbt        # Run data quality tests"
     echo "  just dev-api         # Start FastAPI server"
     echo ""
     echo "Development:"
