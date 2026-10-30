@@ -13,7 +13,10 @@ import pytest
 
 TESTS_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 
-TIER_MARKERS = {
+# Tier folder under tests/ -> marker name. The placement checker reads this dictionary by AST.
+DIRECTORY_MARKERS = {"unit": "unit", "integration": "integration", "contract": "contract", "host": "host", "e2e": "e2e"}
+
+TIER_DESCRIPTIONS = {
     "unit": "deterministic, isolated, no external dependencies",
     "integration": "uses the network, a subprocess, a live service, or live repo state",
     "contract": "checks an interface contract between components",
@@ -23,13 +26,13 @@ TIER_MARKERS = {
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    for tier, description in TIER_MARKERS.items():
-        config.addinivalue_line("markers", f"{tier}: {description}")
+    for folder, marker in DIRECTORY_MARKERS.items():
+        config.addinivalue_line("markers", f"{marker}: {TIER_DESCRIPTIONS[folder]}")
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     """Mark every collected test with the tier of the folder it lives in."""
     for item in items:
-        for tier in TIER_MARKERS:
-            if Path(item.path).is_relative_to(TESTS_DIR / tier):
-                item.add_marker(getattr(pytest.mark, tier))
+        for folder, marker in DIRECTORY_MARKERS.items():
+            if Path(item.path).is_relative_to(TESTS_DIR / folder):
+                item.add_marker(getattr(pytest.mark, marker))
