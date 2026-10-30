@@ -11,8 +11,8 @@ A data platform for tracking and analyzing quantum computing companies, breakthr
 - REST API for portfolio analysis
 - GitHub Actions scheduled updates
 
-**Cost**: ~$0/month  
-**Data**: Quantum computing companies, public datasets, research metadata  
+**Cost**: ~$0/month
+**Data**: Quantum computing companies, public datasets, research metadata
 **Time to deploy**: 30 minutes
 
 **Status**: Working foundation with placeholders for domain-specific data sources
@@ -235,8 +235,8 @@ GET /api/timeline       # Funding timeline analysis
 
 ```python
 # All quantum computing companies by funding
-SELECT company_name, total_funding_usd 
-FROM company_metrics 
+SELECT company_name, total_funding_usd
+FROM company_metrics
 ORDER BY total_funding_usd DESC
 
 # Recent breakthroughs
@@ -298,11 +298,11 @@ just dev-api
 3. Add Silver model in `dbt/models/silver/`
 4. Add Gold metrics in `dbt/models/gold/`
 5. Add API endpoint in `api/serve.py`
-6. Run `just dbt && just test`
+6. Run `just dbt && just test-dbt`
 
 ### Test data quality
 ```bash
-just test
+just test-dbt
 ```
 
 ### View dbt documentation
