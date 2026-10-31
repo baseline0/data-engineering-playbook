@@ -229,3 +229,8 @@ info:
 # Shared fleet recipes, run by fleet-base's installed tool (run `just -f ~/projects/fleet-base/justfile install-fleet`; ADR-020).
 # Each line calls `fleet recipe NAME`; define a recipe here instead to override it.
 # ============================================================================
+
+# Format and fix lint in place. Pre-commit only checks; this is the one place that writes formatting.
+fmt:
+    git ls-files -z -- '*.py' | xargs -0 -r uv run ruff format
+    git ls-files -z -- '*.py' | xargs -0 -r uv run ruff check --fix

@@ -6,8 +6,6 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-merge-conflict
       - id: check-added-large-files
         args: [--maxkb=1000]
@@ -18,14 +16,14 @@ repos:
     hooks:
       - id: ruff-format
         name: ruff format
-        entry: uv run ruff format
+        entry: uv run ruff format --check
         language: system
         types: [python]
         stages: [pre-commit]
 
       - id: ruff-check
         name: ruff check
-        entry: uv run ruff check --fix
+        entry: uv run ruff check --no-fix
         language: system
         types: [python]
         stages: [pre-commit]
@@ -38,17 +36,20 @@ repos:
         stages: [pre-commit]
         pass_filenames: false
 
-      - id: trailing-whitespace
-        name: trim trailing whitespace
-        entry: trailing-whitespace-fixer
+      - id: whitespace-check
+        name: '[P1] Whitespace in the staged diff (check only)'
+        entry: git diff --cached --check
         language: system
-        types: [text]
-
-      - id: end-of-file-fixer
-        name: fix end of file fixer
-        entry: end-of-file-fixer
+        pass_filenames: false
+        stages:
+          - pre-commit
+      - id: check-hook-writers
+        name: '[P1] No commit hook writes tracked files'
+        entry: fleet hook --name check-hook-writers
         language: system
-        types: [text]
+        pass_filenames: false
+        stages:
+          - pre-commit
   - repo: local
     hooks:
       - id: repo-root-pattern
