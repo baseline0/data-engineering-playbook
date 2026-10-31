@@ -73,10 +73,7 @@ def test_later_rounds_are_skipped_when_random_draw_is_high(
 def test_init_database_creates_both_tables(tmp_path: Path) -> None:
     conn = init_database(tmp_path / "nested" / "quantum.db")
     try:
-        tables = {
-            row[0]
-            for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        }
+        tables = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     finally:
         conn.close()
 
@@ -121,22 +118,18 @@ def test_fetch_company_data_commits_rows(tmp_path: Path) -> None:
     assert count == 8
 
 
-def test_cli_prints_summary_and_exits_zero(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_cli_prints_summary_and_exits_zero(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(fetch_companies, "DEFAULT_DB_PATH", tmp_path / "quantum.db")
     random.seed(0)
 
-    result = runner.invoke(fetch_companies.app, [])
+    result = runner.invoke(fetch_companies.app, ["--no-regenerate"])
 
     assert result.exit_code == 0
     assert "Fetching quantum company data..." in result.output
     assert "Success! Loaded 8 companies." in result.output
 
 
-def test_cli_regenerate_clears_existing_database(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_cli_regenerate_clears_existing_database(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     db_path = tmp_path / "quantum.db"
     db_path.write_bytes(b"")
     monkeypatch.setattr(fetch_companies, "DEFAULT_DB_PATH", db_path)

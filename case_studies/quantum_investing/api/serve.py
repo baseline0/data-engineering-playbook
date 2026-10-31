@@ -11,13 +11,11 @@ Then visit:
     http://localhost:8000/redoc (ReDoc)
 """
 
-from fastapi import FastAPI, Query, HTTPException
-from fastapi.responses import JSONResponse
 import sqlite3
 from pathlib import Path
-from typing import List, Optional
+
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
-from datetime import datetime
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -34,19 +32,21 @@ BRONZE_DB = Path(__file__).parent.parent / "data" / "bronze" / "weather.db"
 # Pydantic models for request/response validation
 class WeatherObservation(BaseModel):
     """Single weather observation"""
+
     observation_date: str
     station_id: str
     temp_max_c: float
     temp_min_c: float
     temp_avg_c: float
     precipitation_mm: float
-    wind_speed_kmh: Optional[float] = None
-    humidity_percent: Optional[int] = None
+    wind_speed_kmh: float | None = None
+    humidity_percent: int | None = None
     data_quality_flag: str
 
 
 class MonthlyMetric(BaseModel):
     """Monthly aggregated weather metric"""
+
     month: str
     station_id: str
     avg_temperature: float
@@ -58,6 +58,7 @@ class MonthlyMetric(BaseModel):
 
 class PipelineStatus(BaseModel):
     """Pipeline execution status"""
+
     status: str
     last_updated: str
     raw_records: int
@@ -65,31 +66,23 @@ class PipelineStatus(BaseModel):
 
 
 # Health check endpoint
-@app.get(
-    "/health",
-    summary="Health check",
-    response_description="API is running"
-)
+@app.get("/health", summary="Health check", response_description="API is running")
 async def health():
     """Check if API is running"""
-    return {
-        "status": "ok",
-        "service": "Manitoba Climate Analytics API",
-        "version": "1.0.0"
-    }
+    return {"status": "ok", "service": "Manitoba Climate Analytics API", "version": "1.0.0"}
 
 
 # Weather observations endpoint
 @app.get(
     "/api/observations",
     summary="Get weather observations",
-    response_model=List[WeatherObservation],
-    tags=["Weather Data"]
+    response_model=list[WeatherObservation],
+    tags=["Weather Data"],
 )
 async def get_observations(
-    station_id: Optional[str] = Query(None, description="Filter by station (winnipeg_pearson, brandon)"),
+    station_id: str | None = Query(None, description="Filter by station (winnipeg_pearson, brandon)"),
     limit: int = Query(100, ge=1, le=1000, description="Max records to return"),
-    order: str = Query("desc", description="Sort order: asc or desc")
+    order: str = Query("desc", description="Sort order: asc or desc"),
 ):
     """
     Get historical weather observations.
@@ -118,19 +111,14 @@ async def get_observations(
         return [dict(row) for row in rows]
 
     except sqlite3.DatabaseError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e!s}")
 
 
 # Monthly metrics endpoint
-@app.get(
-    "/api/monthly",
-    summary="Get monthly metrics",
-    response_model=List[MonthlyMetric],
-    tags=["Aggregations"]
-)
+@app.get("/api/monthly", summary="Get monthly metrics", response_model=list[MonthlyMetric], tags=["Aggregations"])
 async def get_monthly_metrics(
-    station_id: Optional[str] = Query(None, description="Filter by station"),
-    year: Optional[int] = Query(None, description="Filter by year (e.g., 2024)")
+    station_id: str | None = Query(None, description="Filter by station"),
+    year: int | None = Query(None, description="Filter by year (e.g., 2024)"),
 ):
     """
     Get monthly aggregated weather metrics.
@@ -170,16 +158,11 @@ async def get_monthly_metrics(
         return [dict(row) for row in rows]
 
     except sqlite3.DatabaseError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e!s}")
 
 
 # Pipeline status endpoint
-@app.get(
-    "/api/status",
-    summary="Pipeline status",
-    response_model=PipelineStatus,
-    tags=["Admin"]
-)
+@app.get("/api/status", summary="Pipeline status", response_model=PipelineStatus, tags=["Admin"])
 async def pipeline_status():
     """Get data pipeline status"""
     try:
@@ -198,24 +181,15 @@ async def pipeline_status():
             status="operational" if record_count > 0 else "empty",
             last_updated=str(last_updated),
             raw_records=record_count,
-            message=f"Pipeline has {record_count} weather observations"
+            message=f"Pipeline has {record_count} weather observations",
         )
 
     except sqlite3.DatabaseError as e:
-        return PipelineStatus(
-            status="error",
-            last_updated="unknown",
-            raw_records=0,
-            message=f"Database error: {str(e)}"
-        )
+        return PipelineStatus(status="error", last_updated="unknown", raw_records=0, message=f"Database error: {e!s}")
 
 
 # Summary statistics endpoint
-@app.get(
-    "/api/summary",
-    summary="Get summary statistics",
-    tags=["Analytics"]
-)
+@app.get("/api/summary", summary="Get summary statistics", tags=["Analytics"])
 async def get_summary():
     """Get summary statistics for the dataset"""
     try:
@@ -240,21 +214,13 @@ async def get_summary():
 
         return {
             "stations": station_count,
-            "date_range": {
-                "start": stats[0],
-                "end": stats[1]
-            },
+            "date_range": {"start": stats[0], "end": stats[1]},
             "total_records": stats[2],
-            "endpoints": [
-                "/api/observations",
-                "/api/monthly",
-                "/api/summary",
-                "/api/status"
-            ]
+            "endpoints": ["/api/observations", "/api/monthly", "/api/summary", "/api/status"],
         }
 
     except sqlite3.DatabaseError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e!s}")
 
 
 # Root endpoint with documentation
@@ -268,15 +234,15 @@ async def root():
         "docs": {
             "swagger": "http://localhost:8000/docs",
             "redoc": "http://localhost:8000/redoc",
-            "openapi": "http://localhost:8000/openapi.json"
+            "openapi": "http://localhost:8000/openapi.json",
         },
         "endpoints": {
             "health": "GET /health",
             "observations": "GET /api/observations",
             "monthly": "GET /api/monthly",
             "summary": "GET /api/summary",
-            "status": "GET /api/status"
-        }
+            "status": "GET /api/status",
+        },
     }
 
 
@@ -288,9 +254,4 @@ if __name__ == "__main__":
     print("📚 ReDoc: http://localhost:8000/redoc")
     print("")
 
-    uvicorn.run(
-        "serve:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+    uvicorn.run("serve:app", host="0.0.0.0", port=8000, reload=True)

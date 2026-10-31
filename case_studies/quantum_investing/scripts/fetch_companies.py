@@ -201,9 +201,7 @@ def generate_funding_round(company: dict, year: int) -> dict | None:
     }
 
 
-def load_companies(
-    conn: sqlite3.Connection, companies: list[dict], current_year: int
-) -> list[CompanyLoad]:
+def load_companies(conn: sqlite3.Connection, companies: list[dict], current_year: int) -> list[CompanyLoad]:
     """Insert companies and their funding rounds. Does not commit.
 
     A company whose ticker already exists is reported as EXISTS and skipped.
@@ -255,14 +253,10 @@ def load_companies(
                         ),
                     )
 
-            results.append(
-                CompanyLoad(company["name"], company["stage"], LoadStatus.LOADED)
-            )
+            results.append(CompanyLoad(company["name"], company["stage"], LoadStatus.LOADED))
 
         except sqlite3.IntegrityError:
-            results.append(
-                CompanyLoad(company["name"], company["stage"], LoadStatus.EXISTS)
-            )
+            results.append(CompanyLoad(company["name"], company["stage"], LoadStatus.EXISTS))
 
     return results
 
@@ -287,8 +281,8 @@ def inserted_count(results: list[CompanyLoad]) -> int:
 def main(
     regenerate: Annotated[
         bool,
-        typer.Option("--regenerate", help="Regenerate all data (clears existing data)"),
-    ] = False,
+        typer.Option("--regenerate/--no-regenerate", help="Regenerate all data (clears existing data)"),
+    ],
 ) -> None:
     """Fetch quantum computing company data to bronze layer."""
     if regenerate and clear_database(DEFAULT_DB_PATH):

@@ -7,6 +7,7 @@ Validates data quality using Great Expectations.
 import sqlite3
 from pathlib import Path
 
+
 def validate_data():
     """Run data quality checks"""
     db_path = Path(__file__).parent.parent / "data" / "bronze" / "weather.db"
@@ -71,6 +72,7 @@ def validate_data():
     except Exception as e:
         print(f"❌ Validation error: {e}")
         return False
+
 
 if __name__ == "__main__":
     validate_data()

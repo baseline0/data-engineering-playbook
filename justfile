@@ -75,7 +75,7 @@ run-case-study:
 
     # 1. Fetch data
     echo "1️⃣  Fetching quantum company data..."
-    python scripts/fetch_companies.py
+    python scripts/fetch_companies.py --no-regenerate
 
     # 2. Transform with dbt
     echo ""
@@ -116,7 +116,7 @@ dev-api:
 fetch-data:
     #!/bin/bash
     cd case_studies/quantum_investing
-    python scripts/fetch_companies.py
+    python scripts/fetch_companies.py --no-regenerate
 
 # DBT: Run dbt transformations
 dbt:

@@ -82,9 +82,7 @@ def generate_realistic_weather(date: str, station_id: str) -> dict:
 
     # Precipitation more likely in summer
     precip_prob = 0.3 if 5 <= month <= 9 else 0.2
-    precipitation = (
-        round(random.expovariate(1.5) * 10, 1) if random.random() < precip_prob else 0
-    )
+    precipitation = round(random.expovariate(1.5) * 10, 1) if random.random() < precip_prob else 0
 
     # Wind speed varies
     wind_speed = round(random.uniform(5, 30), 1)
@@ -165,8 +163,8 @@ def fetch_weather_data(db_path: Path, end_date: datetime, days: int) -> WeatherL
 def main(
     days: Annotated[
         int,
-        typer.Option(help="Number of days of historical data to fetch (default: 7)"),
-    ] = 7,
+        typer.Option("--days", help="Number of days of historical data to fetch"),
+    ],
 ) -> None:
     """Fetch weather data to bronze layer."""
     typer.echo(f"Fetching {days} days of weather data...")
